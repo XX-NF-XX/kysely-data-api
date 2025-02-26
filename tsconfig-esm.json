@@ -3,6 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "module": "ESNext",
+    "moduleResolution": "node10",
     "outDir": "dist/esm"
   }
 }

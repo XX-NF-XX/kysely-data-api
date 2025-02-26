@@ -1,7 +1,6 @@
 {
-  "extends": "@tsconfig/node14",
+  "extends": "@tsconfig/node22",
   "compilerOptions": {
-    "moduleResolution": "node",
     "declaration": true,
     "target": "ESNext"
   },
