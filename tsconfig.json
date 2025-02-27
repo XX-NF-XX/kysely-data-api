@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node22",
   "compilerOptions": {
+    "moduleResolution": "node16",
     "declaration": true,
     "target": "ESNext"
   },
