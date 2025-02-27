@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostgresIntrospector = void 0;
-const kysely_1 = require("kysely");
-const kysely_2 = require("kysely");
-class PostgresIntrospector {
+import { DEFAULT_MIGRATION_LOCK_TABLE, DEFAULT_MIGRATION_TABLE } from "kysely";
+import { sql } from "kysely";
+export class PostgresIntrospector {
     #db;
     constructor(db) {
         this.#db = db;
@@ -33,7 +30,7 @@ class PostgresIntrospector {
             "a.attnotnull as not_null",
             "a.atthasdef as has_default",
             "c.relname as table",
-            (0, kysely_2.sql) `case when c.relkind = 'v' then true else false end`.as("is_view"),
+            sql `case when c.relkind = 'v' then true else false end`.as("is_view"),
             "ns.nspname as schema",
             "typ.typname as type",
             "dtns.nspname as type_schema",
@@ -41,11 +38,11 @@ class PostgresIntrospector {
             // that is created for `serial` and `bigserial` columns.
             this.#db
                 .selectFrom("pg_class")
-                .select((0, kysely_2.sql) `true`.as("auto_incrementing"))
+                .select(sql `true`.as("auto_incrementing"))
                 // Make sure the sequence is in the same schema as the table.
                 .whereRef("relnamespace", "=", "c.relnamespace")
                 .where("relkind", "=", "S")
-                .where("relname", "=", (0, kysely_2.sql) `c.relname || '_' || a.attname || '_seq'`)
+                .where("relname", "=", sql `c.relname || '_' || a.attname || '_seq'`)
                 .as("auto_incrementing"),
         ])
             // r == normal table
@@ -61,8 +58,8 @@ class PostgresIntrospector {
             .$castTo();
         if (!options.withInternalKyselyTables) {
             query = query
-                .where("c.relname", "!=", kysely_1.DEFAULT_MIGRATION_TABLE)
-                .where("c.relname", "!=", kysely_1.DEFAULT_MIGRATION_LOCK_TABLE);
+                .where("c.relname", "!=", DEFAULT_MIGRATION_TABLE)
+                .where("c.relname", "!=", DEFAULT_MIGRATION_LOCK_TABLE);
         }
         const rawColumns = await query.execute();
         return this.#parseTableMetadata(rawColumns);
@@ -96,4 +93,3 @@ class PostgresIntrospector {
         }, []);
     }
 }
-exports.PostgresIntrospector = PostgresIntrospector;

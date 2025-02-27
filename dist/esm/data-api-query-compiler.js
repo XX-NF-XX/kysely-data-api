@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MysqlDataApiQueryCompiler = exports.PostgresDataApiQueryCompiler = void 0;
-const kysely_1 = require("kysely");
-class PostgresDataApiQueryCompiler extends kysely_1.PostgresQueryCompiler {
+import { MysqlQueryCompiler, PostgresQueryCompiler } from "kysely";
+export class PostgresDataApiQueryCompiler extends PostgresQueryCompiler {
     appendValue(value) {
         const name = this.numParameters;
         this.append(this.getCurrentParameterPlaceholder());
@@ -15,8 +12,7 @@ class PostgresDataApiQueryCompiler extends kysely_1.PostgresQueryCompiler {
         return ":" + this.numParameters;
     }
 }
-exports.PostgresDataApiQueryCompiler = PostgresDataApiQueryCompiler;
-class MysqlDataApiQueryCompiler extends kysely_1.MysqlQueryCompiler {
+export class MysqlDataApiQueryCompiler extends MysqlQueryCompiler {
     appendValue(value) {
         const name = this.numParameters;
         this.append(this.getCurrentParameterPlaceholder());
@@ -29,7 +25,6 @@ class MysqlDataApiQueryCompiler extends kysely_1.MysqlQueryCompiler {
         return ":" + this.numParameters;
     }
 }
-exports.MysqlDataApiQueryCompiler = MysqlDataApiQueryCompiler;
 function serialize(value) {
     switch (typeof value) {
         case "bigint":

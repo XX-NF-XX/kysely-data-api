@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DataApiDriver = void 0;
-class DataApiDriver {
+export class DataApiDriver {
     #config;
     constructor(config) {
         this.#config = config;
@@ -28,7 +25,6 @@ class DataApiDriver {
         // do nothing
     }
 }
-exports.DataApiDriver = DataApiDriver;
 class DataApiConnection {
     #config;
     #transactionId;
